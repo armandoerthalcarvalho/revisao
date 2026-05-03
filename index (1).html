@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Materiais de Revisão</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --bg:        #F5F2EC;
+      --surface:   #FFFFFF;
+      --border:    #DDD9D0;
+      --text:      #1A1714;
+      --muted:     #7A756E;
+      --accent-f:  #1A4F8A;   /* Física   — azul */
+      --accent-q:  #7A3A00;   /* Química  — âmbar */
+      --accent-b:  #2A5C1A;   /* Biologia — verde */
+      --tag-f-bg:  #E8EFF8;
+      --tag-q-bg:  #FBF0E0;
+      --tag-b-bg:  #E8F3E4;
+      --serif:     'DM Serif Display', serif;
+      --sans:      'DM Sans', sans-serif;
+      --mono:      'DM Mono', monospace;
+      --radius:    12px;
+      --shadow:    0 2px 12px rgba(0,0,0,.07);
+    }
+
+    /* ─── BASE ───────────────────────────────────────────── */
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────────── */
+    header {
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    header h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: .75rem;
+    }
+    header p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 480px;
+    }
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0 0;
+    }
+
+    /* ─── SECTION LABEL ──────────────────────────────────── */
+    .section-label {
+      max-width: 680px;
+      margin: 0 auto 1rem;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── CARD GRID ──────────────────────────────────────── */
+    .grid {
+      max-width: 680px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+
+    /* ─── CARD ───────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.25rem 1rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      transition: transform .18s ease, box-shadow .18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .card.fisica::before  { background: var(--accent-f); }
+    .card.quimica::before { background: var(--accent-q); }
+    .card.bio::before     { background: var(--accent-b); }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.11);
+    }
+
+    /* tag */
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+    .card.fisica  .tag { background: var(--tag-f-bg); color: var(--accent-f); }
+    .card.quimica .tag { background: var(--tag-q-bg); color: var(--accent-q); }
+    .card.bio     .tag { background: var(--tag-b-bg); color: var(--accent-b); }
+
+    /* title */
+    .card-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    /* description */
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    /* cta row */
+    .card-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: .25rem;
+    }
+    .btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      display: inline-block;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .82; }
+    .card.fisica  .btn { background: var(--accent-f); color: #fff; }
+    .card.quimica .btn { background: var(--accent-q); color: #fff; }
+    .card.bio     .btn { background: var(--accent-b); color: #fff; }
+
+    .card-type {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      max-width: 680px;
+      margin: 3rem auto 0;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── FADE-IN ─────────────────────────────────────────── */
+    .card {
+      opacity: 0;
+      animation: fadeUp .4s ease forwards;
+    }
+    .card:nth-child(1) { animation-delay: .05s; }
+    .card:nth-child(2) { animation-delay: .12s; }
+    .card:nth-child(3) { animation-delay: .19s; }
+    .card:nth-child(4) { animation-delay: .26s; }
+    .card:nth-child(5) { animation-delay: .33s; }
+    .card:nth-child(6) { animation-delay: .40s; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ─── ABOUT BANNER ───────────────────────────────────── */
+    .about {
+      max-width: 680px;
+      margin: 0 auto 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      box-shadow: var(--shadow);
+      animation: fadeUp .3s ease forwards;
+    }
+    .about-icon { font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+    .about-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .about-text strong { color: var(--text); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════ HEADER ══════════════ -->
+  <header>
+    <p class="eyebrow">9º Ano · Materiais de Estudo</p>
+    <!-- ✏️ EDITE: título e subtítulo do hub -->
+    <h1>Resumos e videoaulas<br>da matéria</h1>
+    <p>Resumos e videoaulas de Física, Química e Biologia. Clique em qualquer card para acessar o material.</p>
+    <div class="divider"></div>
+  </header>
+
+  <!-- ══════════════ ABOUT ══════════════ -->
+  <div class="about">
+    <span class="about-icon">ℹ️</span>
+    <p class="about-text">
+      <strong>Os links e conteúdos deste hub mudam com frequência.</strong>
+      Os materiais são atualizados conforme a necessidade — cada link pode cobrir avaliações diferentes, não necessariamente a mais recente. Antes de estudar, sempre verifique o título do material para confirmar que está revisando o conteúdo certo para a sua prova.
+    </p>
+  </div>
+
+  <!-- ══════════════ RESUMOS ══════════════ -->
+  <p class="section-label">Resumos de Matéria</p>
+  <div class="grid">
+
+    <!-- ✏️ CARD 1 — Física, Resumo -->
+    <a class="card fisica" href="https://armandoerthalcarvalho.github.io/resumomateria/" target="_blank" rel="noopener">
+      <span class="tag">Física · CT2</span>
+      <p class="card-title">Movimento Uniformemente Variado (MUV)</p>
+      <p class="card-desc">
+        <!-- ✏️ Edite este texto para descrever o conteúdo atual do link -->
+        Fórmulas do MUV, gráficos de s×t, v×t e a×t, e os principais erros a evitar.
+      </p>
+      <div class="card-cta">
+        <span class="btn">Acessar →</span>
+        <span class="card-type">Resumo</span>
+      </div>
+    </a>
+
+    <!-- ✏️ CARD 2 — Química, Resumo -->
+    <a class="card quimica" href="https://armandoerthalcarvalho.github.io/resumomateria2/" target="_blank" rel="noopener">
+      <span class="tag">Química · CT2</span>
+      <p class="card-title">Estrutura Atômica, Íons e Massa Atômica</p>
+      <p class="card-desc">
+        <!-- ✏️ Edite este texto para descrever o conteúdo atual do link -->
+        Número atômico, distribuição eletrônica, regra do octeto, isótopos e isóbaros.
+      </p>
+      <div class="card-cta">
+        <span class="btn">Acessar →</span>
+        <span class="card-type">Resumo</span>
+      </div>
+    </a>
+
+    <!-- ✏️ CARD 3 — Biologia, Resumo -->
+    <a class="card bio" href="https://armandoerthalcarvalho.github.io/resumomateria3/" target="_blank" rel="noopener">
+      <span class="tag">Biologia · CT2</span>
+      <p class="card-title">Evolução e Origem da Vida</p>
+      <p class="card-desc">
+        <!-- ✏️ Edite este texto para descrever o conteúdo atual do link -->
+        Fixismo vs. evolucionismo, Darwin, Lamarck, panspermia e evolução química.
+      </p>
+      <div class="card-cta">
+        <span class="btn">Acessar →</span>
+        <span class="card-type">Resumo</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ══════════════ VIDEOAULAS ══════════════ -->
+  <p class="section-label">Videoaulas de Revisão</p>
+  <div class="grid">
+
+    <!-- ✏️ CARD 4 — Física, Videoaula -->
+    <a class="card fisica" href="https://armandoerthalcarvalho.github.io/videoaulasrevisao/" target="_blank" rel="noopener">
+      <span class="tag">Física · CT2</span>
+      <p class="card-title">Revisão em Vídeo — MUV</p>
+      <p class="card-desc">
+        <!-- ✏️ Edite este texto para descrever o conteúdo atual do link -->
+        Videoaula de revisão do Movimento Uniformemente Variado para o Cycle Test 2.
+      </p>
+      <div class="card-cta">
+        <span class="btn">Assistir →</span>
+        <span class="card-type">Videoaula</span>
+      </div>
+    </a>
+
+    <!-- ✏️ CARD 5 — Química, Videoaula -->
+    <a class="card quimica" href="https://armandoerthalcarvalho.github.io/videoaulasrevisao2" target="_blank" rel="noopener">
+      <span class="tag">Química · CT2</span>
+      <p class="card-title">Revisão em Vídeo — Estrutura Atômica</p>
+      <p class="card-desc">
+        <!-- ✏️ Edite este texto para descrever o conteúdo atual do link -->
+        Revisão de estrutura atômica, íons, massa atômica e semelhanças entre átomos.
+      </p>
+      <div class="card-cta">
+        <span class="btn">Assistir →</span>
+        <span class="card-type">Videoaula</span>
+      </div>
+    </a>
+
+    <!-- ✏️ CARD 6 — Biologia, Videoaula -->
+    <a class="card bio" href="https://armandoerthalcarvalho.github.io/videoaulasrevisao3/" target="_blank" rel="noopener">
+      <span class="tag">Biologia · CT2</span>
+      <p class="card-title">Revisão em Vídeo — Evolução</p>
+      <p class="card-desc">
+        <!-- ✏️ Edite este texto para descrever o conteúdo atual do link -->
+        Guia em vídeo sobre evolução e origem da vida, com exemplos e teorias comparadas.
+      </p>
+      <div class="card-cta">
+        <span class="btn">Assistir →</span>
+        <span class="card-type">Videoaula</span>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    <!-- ✏️ Edite o nome/turma abaixo -->
+    <span>9º Ano · Materiais de Estudo</span>
+    <span id="updated"></span>
+  </footer>
+
+  <script>
+    // Mostra a data de última atualização automaticamente
+    const d = new Date(document.lastModified);
+    document.getElementById('updated').textContent =
+      'Atualizado em ' + d.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+  </script>
+
+</body>
+</html>
